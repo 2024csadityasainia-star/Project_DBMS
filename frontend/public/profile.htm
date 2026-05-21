@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NutriTrack - Profile Setup</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+<div class="main">
+  <div class="left">
+    <h1 class="tag">Nutri<span>Track</span></h1>
+    <h1>Tell us about <span>yourself.</span></h1>
+    <p class="desc">
+      Your profile helps us calculate daily calorie needs and build a diet plan that fits your lifestyle and goals.
+    </p>
+
+    <div class="features">
+      <span>Personalised calorie targets</span>
+      <span>Macro breakdowns</span>
+      <span>Smart diet plans</span>
+    </div>
+  </div>
+
+  <div class="right">
+    <h2>Nutri<span>Track</span></h2>
+    <p class="subtitle">Profile Setup</p>
+
+    <div class="section-label">Personal Info</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="profileName">Full Name</label>
+        <input type="text" id="profileName" placeholder="Your name">
+      </div>
+
+      <div class="form-group">
+        <label for="profileAge">Age</label>
+        <input type="number" id="profileAge" placeholder="e.g. 22">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Gender</label>
+      <div class="pill-group" data-pill-group="gender">
+        <button class="pill" type="button" data-value="Male">Male</button>
+        <button class="pill" type="button" data-value="Female">Female</button>
+        <button class="pill selected" type="button" data-value="Other">Other</button>
+      </div>
+    </div>
+
+    <div class="section-label">Body Measurements</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="profileHeight">Height (cm)</label>
+        <input type="number" id="profileHeight" placeholder="e.g. 165">
+      </div>
+
+      <div class="form-group">
+        <label for="profileWeight">Weight (kg)</label>
+        <input type="number" id="profileWeight" placeholder="e.g. 60">
+      </div>
+    </div>
+
+    <div class="section-label">Activity Level</div>
+    <div class="pill-group" data-pill-group="activity">
+      <button class="pill" type="button" data-value="Sedentary">Sedentary</button>
+      <button class="pill selected" type="button" data-value="Moderate">Moderate</button>
+      <button class="pill" type="button" data-value="Active">Active</button>
+    </div>
+
+    <div class="section-label">Goal</div>
+    <div class="pill-group" data-pill-group="goal">
+      <button class="pill" type="button" data-value="Weight Loss">Weight Loss</button>
+      <button class="pill selected" type="button" data-value="Maintain">Maintain</button>
+      <button class="pill" type="button" data-value="Gain">Gain</button>
+    </div>
+
+    <div class="section-label">Daily Calorie Target (Optional)</div>
+    <div class="form-group">
+      <label for="profileCalorieTarget">Manual Daily Calorie Target (kcal)</label>
+      <input type="number" id="profileCalorieTarget" placeholder="e.g. 2000 (leave blank to auto-calculate)" min="500" max="10000">
+    </div>
+
+    <p class="form-status" id="profileStatus"></p>
+    <button class="save-btn" type="button" id="saveProfileBtn">Save Profile -></button>
+    <a href="index.htm" class="back-link">Back to Home</a>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

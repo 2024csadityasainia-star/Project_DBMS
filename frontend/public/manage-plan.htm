@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Plan - NutriTrack</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="nt-dashboard-page manage-plan-page">
+    <div class="nt-dashboard-container">
+
+      <div class="nt-dashboard-hero">
+        <div class="nt-dashboard-hero-text">
+          <p class="nt-dashboard-tag">NutriTrack Billing</p>
+          <h1>Manage Plan</h1>
+          <p class="nt-dashboard-subtitle">
+            Review your plan details, billing dates, auto renewal setting, and included NutriTrack benefits.
+          </p>
+        </div>
+
+        <div class="nt-dashboard-hero-side">
+          <div class="nt-mini-status">
+            <span class="nt-status-dot"></span>
+            <span id="managePlanHeroStatus">Plan Active</span>
+          </div>
+          <a href="subscription.htm" class="nt-dashboard-plan-btn">View Plans</a>
+        </div>
+      </div>
+
+      <div class="manage-plan-grid">
+        <div class="nt-summary-card nt-summary-card-main manage-plan-main-card">
+          <p class="nt-card-label">Plan Name</p>
+          <h3 id="managePlanName">Free Plan</h3>
+          <p class="nt-card-note" id="managePlanDescription">Basic meal logging and daily calorie overview.</p>
+          <div class="subscription-badge" id="manageAutoRenewBadge">Auto Renew On</div>
+        </div>
+
+        <div class="nt-summary-card">
+          <p class="nt-card-label">Status</p>
+          <h3 id="managePlanStatus">Active</h3>
+          <p class="nt-card-note">Current access status for your NutriTrack plan.</p>
+        </div>
+
+        <div class="nt-summary-card">
+          <p class="nt-card-label">Price</p>
+          <h3 id="managePlanPrice">Rs. 0</h3>
+          <p class="nt-card-note">Monthly plan price for the selected subscription.</p>
+        </div>
+
+        <div class="nt-summary-card">
+          <p class="nt-card-label">Auto Renew</p>
+          <h3 id="manageAutoRenewStatus">On</h3>
+          <p class="nt-card-note">Controls whether your plan renews automatically.</p>
+        </div>
+      </div>
+
+      <div class="manage-plan-dates">
+        <div class="nt-summary-card">
+          <p class="nt-card-label">Start Date</p>
+          <h3 id="manageStartDate">--</h3>
+          <p class="nt-card-note">The date your current plan cycle started.</p>
+        </div>
+
+        <div class="nt-summary-card">
+          <p class="nt-card-label">Next Billing Date</p>
+          <h3 id="manageNextBillingDate">--</h3>
+          <p class="nt-card-note">Your next renewal or billing date.</p>
+        </div>
+      </div>
+
+      <div class="manage-plan-benefits-card">
+        <div class="nt-section-head">
+          <h2>Plan Benefits</h2>
+          <p>Benefits currently included with your active plan.</p>
+        </div>
+
+        <div class="manage-benefits-list" id="manageBenefitsList">
+          <div class="manage-benefit-item">Food log access</div>
+          <div class="manage-benefit-item">Basic calorie tracking</div>
+          <div class="manage-benefit-item">Profile setup</div>
+        </div>
+      </div>
+
+      <div class="subscription-management-card">
+        <div>
+          <p class="nt-card-label">Plan Controls</p>
+          <h2>Update billing preferences</h2>
+          <p>
+            Toggle auto renewal or renew manually from here. Plan upgrades are available from the subscription page.
+          </p>
+        </div>
+        <div class="manage-plan-actions">
+          <button class="subscription-action-btn" id="toggleAutoRenewBtn">Toggle Auto Renew</button>
+          <button class="nt-dashboard-plan-btn subscription-renew-btn" id="manageRenewBtn">Renew Plan</button>
+        </div>
+      </div>
+
+      <div class="recommendation-actions manage-plan-back">
+        <a href="dashboard.htm" class="recommendation-back-btn">Back to Dashboard</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

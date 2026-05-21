@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diet Recommendation - NutriTrack</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="recommendation-page">
+    <div class="recommendation-container">
+      <div class="recommendation-header">
+        <h1>Diet <span>Recommendation</span></h1>
+        <p class="recommendation-subtitle">
+          Personalized diet guidance based on the user's nutrition goals and medical history.
+        </p>
+      </div>
+
+      <div class="recommendation-grid">
+        <div class="recommendation-card">
+          <p class="recommendation-label">Recommended Daily Calories</p>
+          <h2><span id="displayCalories">2000</span> kcal</h2>
+          <p class="recommendation-text">Balanced intake for daily energy and health management.</p>
+        </div>
+
+        <div class="recommendation-card">
+          <p class="recommendation-label">Protein Target</p>
+          <h2><span id="displayProtein">75</span> g</h2>
+          <p class="recommendation-text">Supports muscle recovery and body strength.</p>
+        </div>
+
+        <div class="recommendation-card">
+          <p class="recommendation-label">Carbs Target</p>
+          <h2><span id="displayCarbs">250</span> g</h2>
+          <p class="recommendation-text">Provides steady energy through the day.</p>
+        </div>
+
+        <div class="recommendation-card">
+          <p class="recommendation-label">Fat Target</p>
+          <h2><span id="displayFat">60</span> g</h2>
+          <p class="recommendation-text">Encourages a balanced intake of healthy fats.</p>
+        </div>
+      </div>
+
+      <div class="recommendation-notes-card">
+        <h2>Food Recommendations From Medical History</h2>
+        <div class="recommendation-food-grid">
+          <div>
+            <h3>Prefer More Often</h3>
+            <div class="recommendation-chip-list" id="foodsToPreferList">
+              <span>Loading...</span>
+            </div>
+          </div>
+          <div>
+            <h3>Limit or Avoid</h3>
+            <div class="recommendation-chip-list limit" id="foodsToLimitList">
+              <span>Loading...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recommendation-notes-card">
+        <h2>Condition Guidance</h2>
+        <div class="recommendation-notes-list" id="conditionGuidanceList">
+          <div class="recommendation-note-item" id="conditionGuidanceEmpty">Loading condition guidance...</div>
+        </div>
+      </div>
+
+      <div class="recommendation-notes-card">
+        <h2>Notes Based on Medical Conditions</h2>
+        <div class="recommendation-notes-list" id="recommendationNotesList">
+          <div class="recommendation-note-item" id="recommendationEmptyNote">Loading recommendation notes...</div>
+        </div>
+      </div>
+
+      <div class="recommendation-actions">
+        <a href="medical.htm" class="recommendation-back-btn recommendation-primary-btn">Update Medical History</a>
+        <a href="dashboard.htm" class="recommendation-back-btn">Back to Dashboard</a>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

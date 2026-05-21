@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subscription - NutriTrack</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="nt-dashboard-page subscription-page">
+    <div class="nt-dashboard-container">
+
+      <div class="nt-dashboard-hero">
+        <div class="nt-dashboard-hero-text">
+          <p class="nt-dashboard-tag">NutriTrack Subscription</p>
+          <h1>Manage Your Plan</h1>
+          <p class="nt-dashboard-subtitle">
+            View your active subscription, renewal date, and payment status while keeping your nutrition tools connected.
+          </p>
+        </div>
+
+        <div class="nt-dashboard-hero-side">
+          <div class="nt-mini-status">
+            <span class="nt-status-dot" id="subscriptionStatusDot"></span>
+            <span id="subscriptionHeroStatus">Subscription Active</span>
+          </div>
+          <a href="dashboard.htm" class="nt-dashboard-plan-btn">Back to Dashboard</a>
+        </div>
+      </div>
+
+      <div class="subscription-overview-grid">
+        <div class="nt-summary-card nt-summary-card-main subscription-current-card">
+          <p class="nt-card-label">Current Plan</p>
+          <h3 id="currentPlanName">Premium</h3>
+          <p class="nt-card-note" id="currentPlanDescription">Advanced nutrition guidance enabled</p>
+          <div class="subscription-badge" id="currentPlanBadge">Active Plan</div>
+        </div>
+
+        <div class="nt-summary-card">
+          <p class="nt-card-label">Subscription Start Date</p>
+          <h3 id="subscriptionStartDate">--</h3>
+          <p class="nt-card-note">Your current billing cycle began on this date.</p>
+        </div>
+
+        <div class="nt-summary-card">
+          <p class="nt-card-label">End / Renewal Date</p>
+          <h3 id="subscriptionEndDate">--</h3>
+          <p class="nt-card-note">Renew before this date to keep all benefits active.</p>
+        </div>
+
+        <div class="nt-summary-card">
+          <p class="nt-card-label">Payment Status</p>
+          <h3 id="paymentStatus">Active</h3>
+          <p class="nt-card-note" id="paymentStatusNote">Your payment is up to date.</p>
+        </div>
+      </div>
+
+      <div class="nt-section-head">
+        <h2>Available Plans</h2>
+        <p>Choose a plan from the existing NutriTrack subscription options.</p>
+      </div>
+
+      <div class="subscription-plan-grid" id="subscriptionPlanGrid">
+        <div class="subscription-plan-card" data-plan="Free">
+          <div class="subscription-plan-head">
+            <p class="nt-card-label">Free</p>
+            <span class="subscription-plan-price">Rs. 0</span>
+          </div>
+          <h3>Starter Tracking</h3>
+          <p class="nt-card-note">Basic meal logging and daily calorie overview.</p>
+          <ul class="subscription-feature-list">
+            <li>Food log access</li>
+            <li>Basic calorie tracking</li>
+            <li>Profile setup</li>
+          </ul>
+          <button class="subscription-action-btn" data-action="upgrade" data-plan="Free">Choose Free</button>
+        </div>
+
+        <div class="subscription-plan-card" data-plan="Basic">
+          <div class="subscription-plan-head">
+            <p class="nt-card-label">Basic</p>
+            <span class="subscription-plan-price">Rs. 199</span>
+          </div>
+          <h3>Guided Nutrition</h3>
+          <p class="nt-card-note">Better tracking with diet recommendation support.</p>
+          <ul class="subscription-feature-list">
+            <li>Everything in Free</li>
+            <li>Diet recommendations</li>
+            <li>Medical history support</li>
+          </ul>
+          <button class="subscription-action-btn" data-action="upgrade" data-plan="Basic">Upgrade to Basic</button>
+        </div>
+
+        <div class="subscription-plan-card" data-plan="Premium">
+          <div class="subscription-plan-head">
+            <p class="nt-card-label">Premium</p>
+            <span class="subscription-plan-price">Rs. 499</span>
+          </div>
+          <h3>Complete Health Panel</h3>
+          <p class="nt-card-note">Full NutriTrack access for advanced nutrition guidance.</p>
+          <ul class="subscription-feature-list">
+            <li>Everything in Basic</li>
+            <li>Advanced plan insights</li>
+            <li>Priority renewal benefits</li>
+          </ul>
+          <button class="subscription-action-btn" data-action="upgrade" data-plan="Premium">Upgrade to Premium</button>
+        </div>
+      </div>
+
+      <div class="subscription-management-card">
+        <div>
+          <p class="nt-card-label">Subscription Actions</p>
+          <h2>Keep your plan active</h2>
+          <p>
+            Renew your current subscription to extend the end date and keep NutriTrack features available.
+          </p>
+        </div>
+        <button class="nt-dashboard-plan-btn subscription-renew-btn" id="renewSubscriptionBtn">Renew Subscription</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

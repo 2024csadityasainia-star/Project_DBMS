@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medical History - NutriTrack</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="medical-page">
+    <div class="medical-container">
+      <div class="medical-header">
+        <h1>Medical <span>History</span></h1>
+        <p class="medical-subtitle">
+          Add medical conditions and dietary restrictions to personalize diet recommendations.
+        </p>
+      </div>
+
+      <div class="medical-card">
+        <h2>Add Medical Details</h2>
+
+        <div class="medical-form">
+          <label for="condition">Medical Condition</label>
+          <select id="conditionPreset" class="medical-input">
+            <option value="">Choose a common condition</option>
+            <option value="Diabetes">Diabetes / blood sugar</option>
+            <option value="Heart Issue">Heart issue / cholesterol / BP</option>
+            <option value="Kidney Issue">Kidney issue</option>
+            <option value="Thyroid">Thyroid</option>
+            <option value="Acidity">Acidity / reflux</option>
+            <option value="Anemia">Anemia / low iron</option>
+            <option value="Weight Management">Weight management</option>
+            <option value="No Known Condition">No known condition</option>
+            <option value="custom">Other / custom</option>
+          </select>
+          <input type="text" id="condition" class="medical-input hidden" placeholder="Enter condition name">
+
+          <label for="restriction">Dietary Restriction</label>
+          <textarea id="restriction" class="medical-input medical-textarea medical-restriction-box" placeholder="Recommended foods and foods to limit will appear here. You can edit them."></textarea>
+
+          <label for="notes">Notes</label>
+          <textarea id="notes" class="medical-input medical-textarea" placeholder="Medicines, allergies, doctor advice, severity, or anything important"></textarea>
+
+          <div class="medical-buttons">
+            <button id="addMedicalBtn" class="login-btn">Add</button>
+            <a href="recommendation.htm" class="medical-recommend-btn">View Recommendation</a>
+            <a href="dashboard.htm" class="medical-back-btn">Back</a>
+          </div>
+          <p class="form-status" id="medicalStatus"></p>
+        </div>
+      </div>
+
+      <div class="medical-table-card">
+        <h2>Medical Records</h2>
+        <div class="medical-table-wrapper">
+          <table class="medical-table">
+            <thead>
+              <tr>
+                <th>Condition</th>
+                <th>Dietary Restriction</th>
+                <th>Notes</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="medicalTableBody">
+              <tr id="medicalEmptyRow">
+                <td colspan="4">No medical records added yet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

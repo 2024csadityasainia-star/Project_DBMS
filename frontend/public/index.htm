@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NutriTrack</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="main">
+  <div class="left">
+    <h1 class="tag">Nutri<span>Track</span></h1>
+    <h1>Track every <span>bite</span> you take.</h1>
+    <p class="desc">
+      A complete nutrition and health tracker powered by MySQL - log meals, monitor macros, and get personalized diet recommendations.
+    </p>
+
+    <div class="features">
+      <span>Calorie Tracking</span>
+      <span>Macro Analysis</span>
+      <span>Diet Recommendations</span>
+      <span>Medical History</span>
+      <span>Food Database</span>
+      <span>Subscription Plans</span>
+    </div>
+  </div>
+
+  <div class="right">
+    <h2>Nutri<span>Track</span></h2>
+    <p class="subtitle">Your smart health companion</p>
+
+    <div class="tabs">
+      <button class="active" data-auth-mode="login">Sign In</button>
+      <button data-auth-mode="register">Register</button>
+    </div>
+
+    <input type="text" id="authName" class="auth-register-field hidden" placeholder="Full name">
+    <input type="email" id="authEmail" placeholder="you@example.com">
+    <input type="password" id="authPassword" placeholder="Password">
+
+    <p class="form-status" id="authStatus"></p>
+
+    <button class="login-btn" id="authSubmitBtn">Sign In -></button>
+
+    <div class="divider">or continue as</div>
+
+    <button class="demo">Demo Account</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

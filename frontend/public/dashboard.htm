@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NutriTrack Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="nt-dashboard-page">
+    <div class="nt-dashboard-container">
+
+      <div class="nt-dashboard-hero">
+        <div class="nt-dashboard-hero-text">
+          <p class="nt-dashboard-tag">NutriTrack Health Panel</p>
+          <h1>Welcome to NutriTrack Dashboard</h1>
+          <p class="nt-dashboard-subtitle">
+            Track your nutrition, view your health summary, and manage your diet details in one place.
+          </p>
+        </div>
+
+        <div class="nt-dashboard-hero-side">
+          <div class="nt-mini-status">
+            <span class="nt-status-dot"></span>
+            <span>Health Tracking Active</span>
+          </div>
+          <div class="nt-dashboard-hero-actions">
+            <a href="manage-plan.htm" class="nt-dashboard-plan-btn">Manage Plan</a>
+            <button type="button" class="nt-dashboard-logout-btn" id="logoutBtn">Logout</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="nt-dashboard-highlight">
+        <div class="nt-highlight-card">
+          <p class="nt-highlight-label">Today's Focus</p>
+          <h2 id="healthSummaryDisplay">Stay consistent with meals and hydration today</h2>
+        </div>
+      </div>
+
+      <div class="nt-summary-grid">
+        <div class="nt-summary-card nt-summary-card-main">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+            <p class="nt-card-label" style="margin: 0;">Daily Calorie Intake</p>
+            <button type="button" id="editCalorieTargetBtn" style="background: transparent; border: none; color: var(--nt-primary); cursor: pointer; font-size: 13px; font-weight: 700; padding: 0; display: inline-flex; align-items: center; gap: 4px;" title="Change Daily Calorie Target">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+              <span>Edit</span>
+            </button>
+          </div>
+          <h3><span id="dashboardConsumed">1450</span> / <span id="dashboardRecommended">2000</span> kcal</h3>
+          <p class="nt-card-note" id="dashboardCaloriesNote">550 kcal remaining for today</p>
+          <div class="nt-progress-bar">
+            <div class="nt-progress-fill" id="dashboardProgressFill" style="width: 72%;"></div>
+          </div>
+        </div>
+
+        <div class="nt-summary-card">
+          <p class="nt-card-label">Meals Logged</p>
+          <h3><span id="dashboardMeals">3</span> Meals</h3>
+          <p class="nt-card-note">Breakfast, Lunch and Snack tracked today</p>
+        </div>
+
+        <div class="nt-summary-card">
+          <p class="nt-card-label">Active Subscription</p>
+          <h3 id="dashboardPlan">Premium Plan</h3>
+          <p class="nt-card-note">Advanced nutrition guidance enabled</p>
+        </div>
+      </div>
+
+      <div class="premium-health-grid">
+        <div class="nt-bottom-card premium-feature-card" id="dashboardMacroCard" data-premium-panel="advancedMacros">
+          <div class="premium-feature-head">
+            <div>
+              <p class="nt-card-label">Macro Counter</p>
+              <h2>Protein, Carbs & Fat</h2>
+            </div>
+            <span class="subscription-badge" id="macroPlanBadge">Premium</span>
+          </div>
+          <div class="macro-meter-list">
+            <div class="macro-meter">
+              <span>Protein</span>
+              <strong><span id="dashboardProtein">0</span>/<span id="dashboardProteinTarget">0</span> g</strong>
+              <div class="nt-progress-bar"><div class="nt-progress-fill" id="dashboardProteinProgress"></div></div>
+            </div>
+            <div class="macro-meter">
+              <span>Carbs</span>
+              <strong><span id="dashboardCarbs">0</span>/<span id="dashboardCarbsTarget">0</span> g</strong>
+              <div class="nt-progress-bar"><div class="nt-progress-fill" id="dashboardCarbsProgress"></div></div>
+            </div>
+            <div class="macro-meter">
+              <span>Fat</span>
+              <strong><span id="dashboardFat">0</span>/<span id="dashboardFatTarget">0</span> g</strong>
+              <div class="nt-progress-bar"><div class="nt-progress-fill" id="dashboardFatProgress"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nt-bottom-card premium-feature-card" id="dashboardWaterCard" data-premium-panel="water">
+          <div class="premium-feature-head">
+            <div>
+              <p class="nt-card-label">Water Intake</p>
+              <h2><span id="dashboardWaterMl">0</span> / <span id="dashboardWaterTarget">2500</span> ml</h2>
+            </div>
+            <span class="subscription-badge" id="waterPlanBadge">Premium</span>
+          </div>
+          <p class="nt-card-note">Track hydration alongside meals for a complete daily health view.</p>
+          <div class="nt-progress-bar"><div class="nt-progress-fill" id="dashboardWaterProgress"></div></div>
+          <div class="water-log-controls">
+            <input type="number" id="waterAmount" min="50" max="2000" step="50" placeholder="Add ml">
+            <button type="button" class="subscription-action-btn" id="addWaterBtn">Add Water</button>
+          </div>
+          <p class="form-status" id="waterStatus"></p>
+        </div>
+      </div>
+
+      <div class="nt-section-head">
+        <h2>Quick Actions</h2>
+        <p>Use these shortcuts to manage your NutriTrack project easily.</p>
+      </div>
+
+      <div class="nt-action-grid">
+        <a href="foodlog.htm" class="nt-action-card">
+          <div class="nt-action-icon">+</div>
+          <h3>Log Food</h3>
+          <p>Add meals and calculate calories from your food intake.</p>
+        </a>
+
+        <a href="recommendation.htm" class="nt-action-card" data-feature="recommendations">
+          <div class="nt-action-icon">R</div>
+          <h3>Diet Recommendation</h3>
+          <p>View nutrition targets and personalized diet notes.</p>
+        </a>
+
+        <a href="medical.htm" class="nt-action-card" data-feature="medical">
+          <div class="nt-action-icon">M</div>
+          <h3>Medical History</h3>
+          <p>Add conditions and dietary restrictions for better guidance.</p>
+        </a>
+
+        <a href="subscription.htm" class="nt-action-card">
+          <div class="nt-action-icon">S</div>
+          <h3>Subscription</h3>
+          <p>Check your active plan and manage your NutriTrack access.</p>
+        </a>
+      </div>
+
+      <div class="nt-dashboard-bottom">
+        <div class="nt-bottom-card">
+          <h2>Health Summary</h2>
+          <p id="dashboardHealthSummary">
+            Keep meals balanced, drink enough water, and follow your recommendation notes regularly.
+          </p>
+          <div class="nt-health-focus-list" id="dashboardHealthFocusList"></div>
+        </div>
+
+        <div class="nt-bottom-card">
+          <h2>Project Overview</h2>
+          <p>
+            This dashboard helps connect food logging, medical history, recommendations, and subscription details in one DBMS mini project.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

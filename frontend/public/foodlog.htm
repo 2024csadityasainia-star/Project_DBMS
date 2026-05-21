@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Log - NutriTrack</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="foodlog-page">
+    <div class="foodlog-container">
+      <div class="foodlog-header">
+        <h1>Nutri<span>Track</span></h1>
+        <p class="foodlog-subtitle">Log your meals and track calories easily</p>
+      </div>
+
+      <div class="foodlog-card">
+        <h2>Food Log</h2>
+
+        <!-- Tab Selector -->
+        <div class="foodlog-tab-container">
+          <button type="button" id="tabSearch" class="foodlog-tab-btn active">Search Database</button>
+          <button type="button" id="tabManual" class="foodlog-tab-btn">Manual Entry</button>
+        </div>
+
+        <div class="foodlog-form">
+          <!-- Search Section -->
+          <div id="searchFoodSection">
+            <label for="foodSearch">Food Item</label>
+            <input type="search" id="foodSearch" class="foodlog-input" placeholder="Search foods, brands, meals...">
+            <select id="foodItem" class="foodlog-input hidden">
+              <option value="">Search to load food options</option>
+            </select>
+            <div class="food-results" id="foodResults"></div>
+            <p class="food-source-note" id="foodSourceNote">Results are fetched from Open Food Facts & USDA and cached when logged.</p>
+          </div>
+
+          <!-- Manual Entry Section -->
+          <div id="manualFoodSection" class="hidden">
+            <label for="manualFoodName">Food Name</label>
+            <input type="text" id="manualFoodName" class="foodlog-input" placeholder="e.g. Homemade Paneer Tikka">
+
+            <div class="macros-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 12px;">
+              <div>
+                <label for="manualCalories">Calories (kcal/100g)</label>
+                <input type="number" id="manualCalories" class="foodlog-input" placeholder="e.g. 150" min="0">
+              </div>
+              <div>
+                <label for="manualProtein">Protein (g/100g)</label>
+                <input type="number" id="manualProtein" class="foodlog-input" placeholder="e.g. 8.5" min="0" step="0.1">
+              </div>
+              <div>
+                <label for="manualCarbs">Carbs (g/100g)</label>
+                <input type="number" id="manualCarbs" class="foodlog-input" placeholder="e.g. 12.0" min="0" step="0.1">
+              </div>
+              <div>
+                <label for="manualFat">Fat (g/100g)</label>
+                <input type="number" id="manualFat" class="foodlog-input" placeholder="e.g. 4.2" min="0" step="0.1">
+              </div>
+            </div>
+          </div>
+
+          <label for="quantity">Quantity (grams)</label>
+          <input type="number" id="quantity" class="foodlog-input" placeholder="Enter quantity in grams" min="1">
+
+          <label for="mealType">Meal Type</label>
+          <select id="mealType" class="foodlog-input">
+            <option value="">Select Meal Type</option>
+            <option value="Breakfast">Breakfast</option>
+            <option value="Lunch">Lunch</option>
+            <option value="Dinner">Dinner</option>
+            <option value="Snack">Snack</option>
+          </select>
+
+          <label for="logDate">Log Date</label>
+          <input type="date" id="logDate" class="foodlog-input">
+
+          <div class="foodlog-buttons">
+            <button id="addFoodBtn" class="login-btn">Add Food</button>
+            <a href="dashboard.htm" class="back-btn">Back</a>
+          </div>
+          <p class="form-status" id="foodLogStatus"></p>
+        </div>
+      </div>
+
+      <div class="foodlog-table-card">
+        <h2>Logged Food Items</h2>
+        <div class="table-wrapper">
+          <table class="foodlog-table">
+            <thead>
+              <tr>
+                <th>Food Item</th>
+                <th>Quantity (g)</th>
+                <th>Meal Type</th>
+                <th>Calories</th>
+                <th>Protein</th>
+                <th>Carbs</th>
+                <th>Fat</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="foodLogTableBody">
+              <tr id="emptyRow">
+                <td colspan="8">No food items added yet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

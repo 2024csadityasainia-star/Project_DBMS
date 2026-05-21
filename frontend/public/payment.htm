@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Portal - NutriTrack</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="nt-dashboard-page payment-page">
+    <div class="nt-dashboard-container">
+      <div class="nt-dashboard-hero">
+        <div class="nt-dashboard-hero-text">
+          <p class="nt-dashboard-tag">NutriTrack Checkout</p>
+          <h1>Payment Portal</h1>
+          <p class="nt-dashboard-subtitle">
+            Review your selected plan and complete the demo payment to activate your subscription.
+          </p>
+        </div>
+
+        <div class="nt-dashboard-hero-side">
+          <div class="nt-mini-status">
+            <span class="nt-status-dot"></span>
+            <span id="paymentHeroStatus">Secure Demo Payment</span>
+          </div>
+          <a href="subscription.htm" class="nt-dashboard-plan-btn">Change Plan</a>
+        </div>
+      </div>
+
+      <div class="payment-layout">
+        <div class="payment-summary-card">
+          <p class="nt-card-label">Selected Plan</p>
+          <h2 id="paymentPlanName">Loading...</h2>
+          <p id="paymentPlanDescription">Fetching plan details from MySQL.</p>
+
+          <div class="payment-total-row">
+            <span>Total Amount</span>
+            <strong id="paymentPlanPrice">--</strong>
+          </div>
+
+          <div class="payment-benefits-list" id="paymentBenefitsList"></div>
+        </div>
+
+        <div class="payment-form-card">
+          <h2>Payment Details</h2>
+
+          <div class="payment-method-tabs" data-payment-methods>
+            <button class="selected" type="button" data-method="Card">Card</button>
+            <button type="button" data-method="UPI">UPI</button>
+            <button type="button" data-method="Net Banking">Net Banking</button>
+          </div>
+
+          <div class="payment-form" id="cardPaymentFields">
+            <label for="cardName">Name on Card</label>
+            <input id="cardName" class="payment-input" type="text" placeholder="Enter card holder name">
+
+            <label for="cardNumber">Card Number</label>
+            <input id="cardNumber" class="payment-input" type="text" inputmode="numeric" maxlength="19" placeholder="1234 5678 9012 3456">
+
+            <div class="payment-row">
+              <div>
+                <label for="cardExpiry">Expiry</label>
+                <input id="cardExpiry" class="payment-input" type="text" maxlength="5" placeholder="MM/YY">
+              </div>
+              <div>
+                <label for="cardCvv">CVV</label>
+                <input id="cardCvv" class="payment-input" type="password" inputmode="numeric" maxlength="4" placeholder="123">
+              </div>
+            </div>
+          </div>
+
+          <div class="payment-form hidden" id="upiPaymentFields">
+            <label for="upiId">UPI ID</label>
+            <input id="upiId" class="payment-input" type="text" placeholder="name@bank">
+          </div>
+
+          <div class="payment-form hidden" id="bankPaymentFields">
+            <label for="bankName">Bank Name</label>
+            <select id="bankName" class="payment-input">
+              <option value="">Select bank</option>
+              <option value="State Bank of India">State Bank of India</option>
+              <option value="HDFC Bank">HDFC Bank</option>
+              <option value="ICICI Bank">ICICI Bank</option>
+              <option value="Axis Bank">Axis Bank</option>
+            </select>
+          </div>
+
+          <button class="subscription-action-btn payment-pay-btn" id="completePaymentBtn">Pay Now</button>
+          <p class="form-status" id="paymentStatusMessage"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

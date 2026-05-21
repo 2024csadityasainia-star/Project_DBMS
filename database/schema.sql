@@ -31,6 +31,10 @@ CREATE TABLE user_profiles (
   activity_level ENUM('Sedentary', 'Moderate', 'Active') DEFAULT 'Moderate',
   goal ENUM('Weight Loss', 'Maintain', 'Gain') DEFAULT 'Maintain',
   daily_calorie_target INT DEFAULT 2000,
+  protein_target_g INT DEFAULT NULL,
+  carbs_target_g INT DEFAULT NULL,
+  fat_target_g INT DEFAULT NULL,
+  water_target_ml INT DEFAULT 2500,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   CONSTRAINT fk_profiles_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );

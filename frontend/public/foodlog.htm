@@ -40,24 +40,36 @@
             <label for="manualFoodName">Food Name</label>
             <input type="text" id="manualFoodName" class="foodlog-input" placeholder="e.g. Homemade Paneer Tikka">
 
-            <div class="macros-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 12px;">
+            <div class="manual-macro-mode" role="radiogroup" aria-label="Manual nutrition entry mode">
+              <label>
+                <input type="radio" name="manualMacroMode" value="per100g" checked>
+                Per 100g
+              </label>
+              <label>
+                <input type="radio" name="manualMacroMode" value="total">
+                Total for quantity
+              </label>
+            </div>
+
+            <div class="macros-grid">
               <div>
-                <label for="manualCalories">Calories (kcal/100g)</label>
-                <input type="number" id="manualCalories" class="foodlog-input" placeholder="e.g. 150" min="0">
+                <label for="manualCalories">Calories</label>
+                <input type="number" id="manualCalories" class="foodlog-input" placeholder="e.g. 150" min="0" step="0.1">
               </div>
               <div>
-                <label for="manualProtein">Protein (g/100g)</label>
+                <label for="manualProtein">Protein (g)</label>
                 <input type="number" id="manualProtein" class="foodlog-input" placeholder="e.g. 8.5" min="0" step="0.1">
               </div>
               <div>
-                <label for="manualCarbs">Carbs (g/100g)</label>
+                <label for="manualCarbs">Carbs (g)</label>
                 <input type="number" id="manualCarbs" class="foodlog-input" placeholder="e.g. 12.0" min="0" step="0.1">
               </div>
               <div>
-                <label for="manualFat">Fat (g/100g)</label>
+                <label for="manualFat">Fat (g)</label>
                 <input type="number" id="manualFat" class="foodlog-input" placeholder="e.g. 4.2" min="0" step="0.1">
               </div>
             </div>
+            <p class="manual-macro-note" id="manualMacroNote">Values will be saved per 100g.</p>
           </div>
 
           <label for="quantity">Quantity (grams)</label>

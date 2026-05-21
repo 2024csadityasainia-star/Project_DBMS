@@ -78,17 +78,35 @@
           </div>
           <div class="macro-meter-list">
             <div class="macro-meter">
-              <span>Protein</span>
+              <span>
+                Protein
+                <button type="button" class="target-edit-btn" data-target-edit="protein" title="Change protein target">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                  Edit
+                </button>
+              </span>
               <strong><span id="dashboardProtein">0</span>/<span id="dashboardProteinTarget">0</span> g</strong>
               <div class="nt-progress-bar"><div class="nt-progress-fill" id="dashboardProteinProgress"></div></div>
             </div>
             <div class="macro-meter">
-              <span>Carbs</span>
+              <span>
+                Carbs
+                <button type="button" class="target-edit-btn" data-target-edit="carbs" title="Change carbs target">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                  Edit
+                </button>
+              </span>
               <strong><span id="dashboardCarbs">0</span>/<span id="dashboardCarbsTarget">0</span> g</strong>
               <div class="nt-progress-bar"><div class="nt-progress-fill" id="dashboardCarbsProgress"></div></div>
             </div>
             <div class="macro-meter">
-              <span>Fat</span>
+              <span>
+                Fat
+                <button type="button" class="target-edit-btn" data-target-edit="fat" title="Change fat target">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                  Edit
+                </button>
+              </span>
               <strong><span id="dashboardFat">0</span>/<span id="dashboardFatTarget">0</span> g</strong>
               <div class="nt-progress-bar"><div class="nt-progress-fill" id="dashboardFatProgress"></div></div>
             </div>
@@ -99,7 +117,13 @@
           <div class="premium-feature-head">
             <div>
               <p class="nt-card-label">Water Intake</p>
-              <h2><span id="dashboardWaterMl">0</span> / <span id="dashboardWaterTarget">2500</span> ml</h2>
+              <h2>
+                <span id="dashboardWaterMl">0</span> / <span id="dashboardWaterTarget">2500</span> ml
+                <button type="button" class="target-edit-btn" id="editWaterTargetBtn" title="Change water target">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                  Edit
+                </button>
+              </h2>
             </div>
             <span class="subscription-badge" id="waterPlanBadge">Premium</span>
           </div>

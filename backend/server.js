@@ -233,6 +233,19 @@ async function requirePlan(userId, requiredPlan, res, featureName) {
   return null;
 }
 
+async function ensureColumn(tableName, columnName, definition) {
+  const [columns] = await pool.query(
+    `SELECT COLUMN_NAME
+     FROM INFORMATION_SCHEMA.COLUMNS
+     WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?`,
+    [tableName, columnName]
+  );
+
+  if (!columns.length) {
+    await pool.query(`ALTER TABLE ${tableName} ADD COLUMN ${columnName} ${definition}`);
+  }
+}
+
 function uniqueItems(items) {
   return [...new Set(items.filter(Boolean).map(item => String(item).trim()).filter(Boolean))];
 }
@@ -285,6 +298,11 @@ function buildDashboardHealthSummary(records) {
 
 async function ensureDemoUser() {
   await pool.query("ALTER TABLE medical_records MODIFY dietary_restriction TEXT NOT NULL");
+  await ensureColumn("user_profiles", "protein_target_g", "INT DEFAULT NULL");
+  await ensureColumn("user_profiles", "carbs_target_g", "INT DEFAULT NULL");
+  await ensureColumn("user_profiles", "fat_target_g", "INT DEFAULT NULL");
+  await ensureColumn("user_profiles", "water_target_ml", "INT DEFAULT 2500");
+
   await pool.query(`
     CREATE TABLE IF NOT EXISTS water_logs (
       water_log_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -464,6 +482,62 @@ app.patch("/api/profile/:userId/calories", asyncHandler(async (req, res) => {
   );
 
   res.json({ message: "Calorie target updated successfully.", dailyCalorieTarget });
+}));
+
+app.patch("/api/profile/:userId/macros", asyncHandler(async (req, res) => {
+  const proteinTarget = Math.round(Number(req.body.proteinTarget));
+  const carbsTarget = Math.round(Number(req.body.carbsTarget));
+  const fatTarget = Math.round(Number(req.body.fatTarget));
+
+  if (proteinTarget <= 0 || carbsTarget <= 0 || fatTarget <= 0) {
+    return res.status(400).json({ message: "Valid protein, carbs and fat targets are required." });
+  }
+
+  if (proteinTarget > 1000 || carbsTarget > 1500 || fatTarget > 1000) {
+    return res.status(400).json({ message: "Macro targets are too high. Please enter realistic gram values." });
+  }
+
+  const [profileRows] = await pool.query("SELECT daily_calorie_target FROM user_profiles WHERE user_id = ?", [req.params.userId]);
+  if (!profileRows.length) {
+    return res.status(404).json({ message: "User profile not found." });
+  }
+
+  await pool.query(
+    `UPDATE user_profiles
+     SET protein_target_g = ?, carbs_target_g = ?, fat_target_g = ?
+     WHERE user_id = ?`,
+    [proteinTarget, carbsTarget, fatTarget, req.params.userId]
+  );
+
+  await pool.query(
+    `INSERT INTO nutrition_recommendations (user_id, recommended_calories, protein_g, carbs_g, fat_g)
+     VALUES (?, ?, ?, ?, ?)`,
+    [req.params.userId, Number(profileRows[0].daily_calorie_target || 2000), proteinTarget, carbsTarget, fatTarget]
+  );
+
+  res.json({
+    message: "Macro targets updated successfully.",
+    targets: { proteinTarget, carbsTarget, fatTarget }
+  });
+}));
+
+app.patch("/api/profile/:userId/water-target", asyncHandler(async (req, res) => {
+  const waterTargetMl = Math.round(Number(req.body.waterTargetMl));
+
+  if (!waterTargetMl || waterTargetMl < 500 || waterTargetMl > 10000) {
+    return res.status(400).json({ message: "Enter a valid water target between 500 and 10000 ml." });
+  }
+
+  const [result] = await pool.query(
+    "UPDATE user_profiles SET water_target_ml = ? WHERE user_id = ?",
+    [waterTargetMl, req.params.userId]
+  );
+
+  if (!result.affectedRows) {
+    return res.status(404).json({ message: "User profile not found." });
+  }
+
+  res.json({ message: "Water target updated successfully.", waterTargetMl });
 }));
 
 app.get("/api/foods", asyncHandler(async (_req, res) => {
@@ -1299,11 +1373,15 @@ app.get("/api/water-logs/:userId", asyncHandler(async (req, res) => {
      WHERE user_id = ? AND log_date = ?`,
     [req.params.userId, logDate]
   );
+  const [profileRows] = await pool.query(
+    "SELECT water_target_ml FROM user_profiles WHERE user_id = ?",
+    [req.params.userId]
+  );
 
   res.json({
     date: logDate,
     totalMl: Number(rows[0]?.total_ml || 0),
-    targetMl: 2500,
+    targetMl: Number(profileRows[0]?.water_target_ml || 2500),
     entries: Number(rows[0]?.entries || 0)
   });
 }));
@@ -1348,7 +1426,10 @@ app.get("/api/dashboard/:userId", asyncHandler(async (req, res) => {
   );
 
   const [profile] = await pool.query(
-    "SELECT daily_calorie_target, weight_kg, goal FROM user_profiles WHERE user_id = ?",
+    `SELECT daily_calorie_target, weight_kg, goal,
+      protein_target_g, carbs_target_g, fat_target_g, water_target_ml
+     FROM user_profiles
+     WHERE user_id = ?`,
     [req.params.userId]
   );
 
@@ -1371,9 +1452,10 @@ app.get("/api/dashboard/:userId", asyncHandler(async (req, res) => {
 
   const row = summary[0];
   const recommended = profile[0]?.daily_calorie_target || 2000;
-  const proteinTarget = Math.round(Number(profile[0]?.weight_kg || 65) * 1.2);
-  const carbsTarget = Math.round((recommended * 0.5) / 4);
-  const fatTarget = Math.round((recommended * 0.27) / 9);
+  const proteinTarget = Number(profile[0]?.protein_target_g) || Math.round(Number(profile[0]?.weight_kg || 65) * 1.2);
+  const carbsTarget = Number(profile[0]?.carbs_target_g) || Math.round((recommended * 0.5) / 4);
+  const fatTarget = Number(profile[0]?.fat_target_g) || Math.round((recommended * 0.27) / 9);
+  const waterTargetMl = Number(profile[0]?.water_target_ml) || 2500;
 
   const [waterRows] = await pool.query(
     `SELECT COALESCE(SUM(intake_ml), 0) AS total_ml
@@ -1393,7 +1475,7 @@ app.get("/api/dashboard/:userId", asyncHandler(async (req, res) => {
     carbsTarget,
     fatTarget,
     waterMl: Number(waterRows[0]?.total_ml || 0),
-    waterTargetMl: 2500,
+    waterTargetMl,
     plan: currentPlan,
     access: planAccessPayload(currentPlan),
     date: dashboardDate,

@@ -442,6 +442,8 @@ async function loadDashboard() {
       editBtn.parentNode.replaceChild(newEditBtn, editBtn);
       newEditBtn.addEventListener("click", () => showEditCalorieModal(recommended));
     }
+
+    wireTargetEditButtons(dashboard);
   } catch (error) {
     document.getElementById("healthSummaryDisplay").textContent = error.message;
     document.getElementById("dashboardHealthSummary").textContent = error.message;
@@ -514,6 +516,195 @@ function showEditCalorieModal(currentTarget) {
   document.getElementById("customCalorieInput").value = currentTarget || "";
   document.getElementById("calorieModalStatus").textContent = "";
   modal.classList.remove("hidden");
+}
+
+function currentMacroTargetsFromDashboard() {
+  return {
+    proteinTarget: Number(document.getElementById("dashboardProteinTarget")?.textContent || 0),
+    carbsTarget: Number(document.getElementById("dashboardCarbsTarget")?.textContent || 0),
+    fatTarget: Number(document.getElementById("dashboardFatTarget")?.textContent || 0)
+  };
+}
+
+function showEditSingleMacroModal(macroKey, currentTarget) {
+  const config = {
+    protein: { label: "Protein", field: "proteinTarget", min: 1, max: 1000 },
+    carbs: { label: "Carbs", field: "carbsTarget", min: 1, max: 1500 },
+    fat: { label: "Fat", field: "fatTarget", min: 1, max: 1000 }
+  }[macroKey];
+
+  if (!config) return;
+  if (!hasPlan("Premium")) {
+    showUpgradeModal("Macro target editing", "Premium");
+    return;
+  }
+
+  let modal = document.getElementById("editMacroTargetModal");
+
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "editMacroTargetModal";
+    modal.className = "upgrade-modal hidden";
+    modal.innerHTML = `
+      <div class="upgrade-modal-card">
+        <button type="button" class="upgrade-modal-close" id="closeMacroTargetModal" aria-label="Close edit modal">x</button>
+        <p class="nt-card-label" style="color: var(--nt-secondary); margin: 0 0 10px;">Manual Target</p>
+        <h2 id="macroTargetModalTitle" style="margin: 0 0 10px; color: var(--nt-text); font-size: 24px; font-weight: 800;">Change Macro Target</h2>
+        <p id="macroTargetModalHelp" style="margin: 0 0 14px; color: var(--nt-muted); font-size: 14.5px; line-height: 1.55;"></p>
+        <div style="margin-top: 10px; margin-bottom: 8px;">
+          <input type="number" id="customMacroTargetInput" min="1" max="1500" placeholder="e.g. 120" style="width: 100%; box-sizing: border-box; padding: 12px; border-radius: 14px; border: 1px solid var(--nt-border); background: rgba(255, 255, 255, 0.07); color: var(--nt-text); font-size: 15px; outline: none;">
+        </div>
+        <p class="form-status" id="macroTargetModalStatus" style="margin: 5px 0 0; min-height: 20px; font-size: 14px;"></p>
+        <div class="upgrade-modal-actions" style="margin-top: 16px;">
+          <button id="saveMacroTargetBtn" class="subscription-action-btn" type="button" style="flex: 1;">Save Target</button>
+          <button type="button" class="recommendation-back-btn" id="cancelMacroTargetModal" style="flex: 1;">Cancel</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    const closeModal = () => modal.classList.add("hidden");
+    document.getElementById("closeMacroTargetModal").addEventListener("click", closeModal);
+    document.getElementById("cancelMacroTargetModal").addEventListener("click", closeModal);
+    modal.addEventListener("click", event => {
+      if (event.target === modal) closeModal();
+    });
+
+    document.getElementById("saveMacroTargetBtn").addEventListener("click", async () => {
+      const activeKey = modal.dataset.macroKey;
+      const activeConfig = {
+        protein: { field: "proteinTarget", min: 1, max: 1000 },
+        carbs: { field: "carbsTarget", min: 1, max: 1500 },
+        fat: { field: "fatTarget", min: 1, max: 1000 }
+      }[activeKey];
+      const statusElement = document.getElementById("macroTargetModalStatus");
+      const newTarget = Math.round(Number(document.getElementById("customMacroTargetInput").value));
+
+      if (!activeConfig || !newTarget || newTarget < activeConfig.min || newTarget > activeConfig.max) {
+        statusElement.textContent = `Please enter a valid target between ${activeConfig?.min || 1} and ${activeConfig?.max || 1500} g.`;
+        statusElement.classList.add("error");
+        return;
+      }
+
+      const payload = currentMacroTargetsFromDashboard();
+      payload[activeConfig.field] = newTarget;
+
+      try {
+        statusElement.textContent = "Saving to MySQL...";
+        statusElement.classList.remove("error");
+        await api(`/api/profile/${getUserId()}/macros`, {
+          method: "PATCH",
+          body: JSON.stringify(payload)
+        });
+        closeModal();
+        await loadDashboard();
+      } catch (error) {
+        statusElement.textContent = error.message;
+        statusElement.classList.add("error");
+      }
+    });
+  }
+
+  modal.dataset.macroKey = macroKey;
+  document.getElementById("macroTargetModalTitle").textContent = `Change ${config.label} Target`;
+  document.getElementById("macroTargetModalHelp").textContent = `Enter your custom daily ${config.label.toLowerCase()} target in grams.`;
+  const input = document.getElementById("customMacroTargetInput");
+  input.min = String(config.min);
+  input.max = String(config.max);
+  input.value = Math.round(currentTarget || "");
+  document.getElementById("macroTargetModalStatus").textContent = "";
+  document.getElementById("macroTargetModalStatus").classList.remove("error");
+  modal.classList.remove("hidden");
+}
+
+function showEditWaterTargetModal(currentTarget) {
+  if (!hasPlan("Premium")) {
+    showUpgradeModal("Water target editing", "Premium");
+    return;
+  }
+
+  let modal = document.getElementById("editWaterTargetModal");
+
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "editWaterTargetModal";
+    modal.className = "upgrade-modal hidden";
+    modal.innerHTML = `
+      <div class="upgrade-modal-card">
+        <button type="button" class="upgrade-modal-close" id="closeWaterTargetModal" aria-label="Close edit modal">x</button>
+        <p class="nt-card-label" style="color: var(--nt-secondary); margin: 0 0 10px;">Manual Target</p>
+        <h2 style="margin: 0 0 10px; color: var(--nt-text); font-size: 24px; font-weight: 800;">Change Water Target</h2>
+        <p style="margin: 0 0 14px; color: var(--nt-muted); font-size: 14.5px; line-height: 1.55;">Enter your custom daily water target in ml.</p>
+        <div style="margin-top: 10px; margin-bottom: 8px;">
+          <input type="number" id="customWaterTargetInput" min="500" max="10000" step="50" placeholder="e.g. 2500" style="width: 100%; box-sizing: border-box; padding: 12px; border-radius: 14px; border: 1px solid var(--nt-border); background: rgba(255, 255, 255, 0.07); color: var(--nt-text); font-size: 15px; outline: none;">
+        </div>
+        <p class="form-status" id="waterTargetModalStatus" style="margin: 5px 0 0; min-height: 20px; font-size: 14px;"></p>
+        <div class="upgrade-modal-actions" style="margin-top: 16px;">
+          <button id="saveWaterTargetBtn" class="subscription-action-btn" type="button" style="flex: 1;">Save Target</button>
+          <button type="button" class="recommendation-back-btn" id="cancelWaterTargetModal" style="flex: 1;">Cancel</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    const closeModal = () => modal.classList.add("hidden");
+    document.getElementById("closeWaterTargetModal").addEventListener("click", closeModal);
+    document.getElementById("cancelWaterTargetModal").addEventListener("click", closeModal);
+    modal.addEventListener("click", event => {
+      if (event.target === modal) closeModal();
+    });
+
+    document.getElementById("saveWaterTargetBtn").addEventListener("click", async () => {
+      const newTarget = Math.round(Number(document.getElementById("customWaterTargetInput").value));
+      const statusElement = document.getElementById("waterTargetModalStatus");
+
+      if (!newTarget || newTarget < 500 || newTarget > 10000) {
+        statusElement.textContent = "Please enter a valid target between 500 and 10000 ml.";
+        statusElement.classList.add("error");
+        return;
+      }
+
+      try {
+        statusElement.textContent = "Saving to MySQL...";
+        statusElement.classList.remove("error");
+        await api(`/api/profile/${getUserId()}/water-target`, {
+          method: "PATCH",
+          body: JSON.stringify({ waterTargetMl: newTarget })
+        });
+        closeModal();
+        await loadDashboard();
+      } catch (error) {
+        statusElement.textContent = error.message;
+        statusElement.classList.add("error");
+      }
+    });
+  }
+
+  document.getElementById("customWaterTargetInput").value = Math.round(currentTarget || 2500);
+  document.getElementById("waterTargetModalStatus").textContent = "";
+  document.getElementById("waterTargetModalStatus").classList.remove("error");
+  modal.classList.remove("hidden");
+}
+
+function wireTargetEditButtons(dashboard) {
+  document.querySelectorAll("[data-target-edit]").forEach(button => {
+    const newButton = button.cloneNode(true);
+    button.parentNode.replaceChild(newButton, button);
+    const key = newButton.dataset.targetEdit;
+    const currentTarget = {
+      protein: dashboard.proteinTarget,
+      carbs: dashboard.carbsTarget,
+      fat: dashboard.fatTarget
+    }[key];
+    newButton.addEventListener("click", () => showEditSingleMacroModal(key, currentTarget));
+  });
+
+  const waterEditBtn = document.getElementById("editWaterTargetBtn");
+  if (waterEditBtn) {
+    const newWaterEditBtn = waterEditBtn.cloneNode(true);
+    waterEditBtn.parentNode.replaceChild(newWaterEditBtn, waterEditBtn);
+    newWaterEditBtn.addEventListener("click", () => showEditWaterTargetModal(dashboard.waterTargetMl));
+  }
 }
 
 loadDashboard();
@@ -822,6 +1013,25 @@ if (tabSearch && tabManual) {
   });
 }
 
+function getManualMacroMode() {
+  return document.querySelector('input[name="manualMacroMode"]:checked')?.value || "per100g";
+}
+
+function updateManualMacroNote() {
+  const note = document.getElementById("manualMacroNote");
+  if (!note) return;
+
+  note.textContent = getManualMacroMode() === "total"
+    ? "Values will be treated as totals for the quantity entered below and converted before saving."
+    : "Values will be saved per 100g.";
+}
+
+document.querySelectorAll('input[name="manualMacroMode"]').forEach(input => {
+  input.addEventListener("change", updateManualMacroNote);
+});
+
+updateManualMacroNote();
+
 if (addFoodBtn) {
   const logDateInput = document.getElementById("logDate");
   if (logDateInput && !logDateInput.value) logDateInput.value = getLocalDateString();
@@ -854,18 +1064,22 @@ if (addFoodBtn) {
       const manualProtein = Number(document.getElementById("manualProtein").value || 0);
       const manualCarbs = Number(document.getElementById("manualCarbs").value || 0);
       const manualFat = Number(document.getElementById("manualFat").value || 0);
+      const manualMacroMode = getManualMacroMode();
+      const manualValues = [manualCalories, manualProtein, manualCarbs, manualFat];
 
-      if (!manualFoodName || isNaN(manualCalories) || manualCalories < 0) {
+      if (!manualFoodName || manualValues.some(value => !Number.isFinite(value) || value < 0)) {
         setStatus("foodLogStatus", "Please enter a valid food name and calories.", true);
         return;
       }
 
+      const macroFactor = manualMacroMode === "total" ? 100 / quantityG : 1;
+
       foodData = {
         food_name: manualFoodName,
-        calories_per_100g: manualCalories,
-        protein_per_100g: manualProtein,
-        carbs_per_100g: manualCarbs,
-        fat_per_100g: manualFat
+        calories_per_100g: Math.round(manualCalories * macroFactor * 10) / 10,
+        protein_per_100g: Math.round(manualProtein * macroFactor * 10) / 10,
+        carbs_per_100g: Math.round(manualCarbs * macroFactor * 10) / 10,
+        fat_per_100g: Math.round(manualFat * macroFactor * 10) / 10
       };
     }
 
@@ -891,6 +1105,9 @@ if (addFoodBtn) {
         document.getElementById("manualProtein").value = "";
         document.getElementById("manualCarbs").value = "";
         document.getElementById("manualFat").value = "";
+        const per100gMode = document.querySelector('input[name="manualMacroMode"][value="per100g"]');
+        if (per100gMode) per100gMode.checked = true;
+        updateManualMacroNote();
       }
 
       setStatus("foodLogStatus", "Food added to MySQL log.");
